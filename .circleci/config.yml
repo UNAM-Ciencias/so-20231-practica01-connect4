@@ -1,0 +1,23 @@
+version: 2.1
+
+executors:
+  buildpack-only:
+    docker:
+      - image: alpine:3.16
+    environment:
+      JAVA_ENV: localhost
+
+jobs:
+  build:
+    parallelism: 1
+    working_directory: /home/circleci/sistemas-operativos
+    executor: buildpack-only
+
+    steps:
+      - checkout
+
+      - run: apk add build-base
+
+      - run: gcc -Wall -Werror -o practica01 src/*.c
+
+      - run: sh run-tests
